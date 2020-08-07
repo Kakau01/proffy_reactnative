@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { View, Image, Text } from "react-native";
 import { BorderlessButton } from "react-native-gesture-handler";
 
@@ -12,20 +12,23 @@ import { useNavigation } from "@react-navigation/native";
 // uso a interface para poder dar um tipo ao parametro que vou manipular na funcao, pois ele tera mais de um conteudo para ser manipulado em telas diferentes
 interface PageHeaderProps {
     title: string;
+    //posso receber um componente como uma propriedade
+    headerRight?: ReactNode;
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({title}) => {
- 
+//children é os elementos que eu mostro dentro do page header
+const PageHeader: React.FC<PageHeaderProps> = ({ title, headerRight, children }) => {
+
     //forçar a navegacao a voltar para a landing page
     const { navigate } = useNavigation();
-    
+
     function handleGoBack() {
-               
-    navigate('Landing');
+
+        navigate('Landing');
     }
 
     return (
-        
+
         <View style={styles.container}>
             {/* Botao de voltar da header */}
             <View style={styles.topBar}>
@@ -36,7 +39,14 @@ const PageHeader: React.FC<PageHeaderProps> = ({title}) => {
                 <Image source={logoImg} resizeMode='contain' />
             </View>
 
-            <Text style={styles.title}>{title}</Text>
+            <View style={styles.header}>
+                <Text style={styles.title}>{title}</Text>
+                {headerRight}
+            </View>
+
+
+            {children}
+
         </View>
 
     )
